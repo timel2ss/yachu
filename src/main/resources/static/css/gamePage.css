@@ -117,3 +117,10 @@ table {
     right: 5%;
     color: white;
 }
+
+#chanceText {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    margin: 0;
+}

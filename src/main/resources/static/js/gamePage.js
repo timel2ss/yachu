@@ -53,6 +53,8 @@ function load() {
             }
             categories[14].innerHTML = total;
             fillScoreBoard(json.diceScore, "gray");
+
+            showChance();
         })
 }
 
@@ -123,8 +125,8 @@ function rollDices() {
             }
 
             fillScoreBoard(json.score, "gray");
+            showChance();
         });
-
 }
 
 function gain(index) {
@@ -180,6 +182,8 @@ function gain(index) {
             total.innerHTML = Number(total.innerHTML) + BONUS_SCORE;
         }
 
+        showChance();
+
     })
 
     function isHomework(index) {
@@ -232,4 +236,8 @@ function closeLayerPopup() {
         element.style.display = "none";
     }
     document.getElementById("layerPopup").style.display = "none";
+}
+
+function showChance() {
+    document.getElementById("chanceText").innerHTML = "남은 횟수 : " + (3 - chance);
 }
