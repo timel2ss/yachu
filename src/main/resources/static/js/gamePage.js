@@ -265,17 +265,14 @@ function gain(index) {
 }
 
 function textFileLoad() {
-    let content = null;
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", "/text/gameRule.txt", false);
-    xmlhttp.send();
-    if (xmlhttp.status === 200) {
-        content = xmlhttp.responseText;
-        content = content.replace(/\r\n/ig, '<br>');
-        content = content.replace(/\r/ig, '<br>');
-        content = content.replace(/\n/ig, '<br>');
-    }
-    document.getElementById("gameRuleContent").innerHTML = content;
+    fetch("/text/gameRule.txt")
+        .then((res) => res.text())
+        .then((data) => {
+            data = data.replace(/\r\n/ig, '<br>');
+            data = data.replace(/\r/ig, '<br>');
+            data = data.replace(/\n/ig, '<br>');
+            document.getElementById('gameRuleContent').innerHTML = data;
+        })
 }
 
 textFileLoad();
