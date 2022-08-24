@@ -64,6 +64,7 @@ function loadGameState() {
         .then((json) => {
             setGameState(json.chance, json.dices, json.playerScore, "black");
             fillScoreBoard(json.diceScore, "gray");
+            setTmpScoreBoard(json.diceScore);
         })
 }
 
@@ -100,9 +101,7 @@ function rollDices() {
                 diceStates.push(json.dices[index].value);
             }
             setGameState(json.chance, diceStates, json.score, "gray");
-            for(let index = 0; index < json.score.categories.length; index++) {
-                tmpScoreBoard.set(json.score.categories[index].genealogy, json.score.categories[index].point);
-            }
+            setTmpScoreBoard(json.score)
         });
 }
 
@@ -208,6 +207,12 @@ function gain(index) {
                     document.getElementById("rankingTableBody").appendChild(tmpTableRow);
                 }
             });
+    }
+}
+
+function setTmpScoreBoard(scoreState) {
+    for(let index = 0; index < scoreState.categories.length; index++) {
+        tmpScoreBoard.set(scoreState.categories[index].genealogy, scoreState.categories[index].point);
     }
 }
 
