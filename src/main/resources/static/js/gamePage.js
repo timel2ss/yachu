@@ -2,6 +2,7 @@ const id = parseId();
 let chance = 0;
 let fixStates = [false, false, false, false, false];
 let categories = document.getElementsByClassName("category");
+let tmpScoreBoard = new Map();
 
 window.onload = function () {
     loadGamePage();
@@ -99,6 +100,9 @@ function rollDices() {
                 diceStates.push(json.dices[index].value);
             }
             setGameState(json.chance, diceStates, json.score, "gray");
+            for(let index = 0; index < json.score.categories.length; index++) {
+                tmpScoreBoard.set(json.score.categories[index].genealogy, json.score.categories[index].point);
+            }
         });
 }
 
@@ -110,7 +114,7 @@ function gain(index) {
 
     let element = categories[index];
     const category = element.id;
-    const score = element.innerHTML;
+    const score = tmpScoreBoard.get(category);
 
     fetch("/api/" + id + "/gain", {
         method: "POST",
@@ -130,6 +134,7 @@ function gain(index) {
                 document.getElementById("fixedCheckDiv" + (i + 1)).style.display = "none";
             }
             setGameState(0, diceStates, json.score, "black");
+            tmpScoreBoard.clear();
             for (let index = 0; index < categories.length; index++) {
                 if (categories[index].style.color == "gray") {
                     categories[index].innerHTML = "0";
