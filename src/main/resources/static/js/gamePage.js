@@ -206,6 +206,12 @@ function gain(index) {
 
                     document.getElementById("rankingTableBody").appendChild(tmpTableRow);
                 }
+
+                let restartBtn = document.createElement("button");
+                restartBtn.className = "textBtn";
+                restartBtn.innerHTML = "RESTART";
+                restartBtn.onclick = () => restartGame();
+                document.getElementById("rankingContent").appendChild(restartBtn);
             });
     }
 }
@@ -276,4 +282,8 @@ function closeLayerPopup() {
         element.style.display = "none";
     }
     document.getElementById("layerPopup").style.display = "none";
+}
+
+function restartGame() {
+    location.href = "/"
 }
