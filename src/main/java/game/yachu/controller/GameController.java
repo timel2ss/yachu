@@ -78,7 +78,8 @@ public class GameController {
     @PostMapping("/api/{id}/gain")
     public GainResponse gain(@PathVariable("id") Long id, @RequestBody GainRequest request) {
         Player player = gameStateRepository.get(id);
-        player.setScore(Genealogy.valueOf(request.getCategory()), request.getGained());
+        Score calculated = getDiceScore(player, player.getDices());
+        player.setScore(Genealogy.valueOf(request.getCategory()), calculated);
         if (player.isOver()) {
             log.info("Game is Over");
             gameStateRepository.deleteGame(id);

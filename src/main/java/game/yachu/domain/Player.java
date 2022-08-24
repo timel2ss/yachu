@@ -36,7 +36,7 @@ public class Player {
         return dices;
     }
 
-    public void setScore(Genealogy select, int gained) {
+    public void setScore(Genealogy select, Score gained) {
         score.gainPoint(select, gained);
     }
 

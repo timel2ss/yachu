@@ -48,7 +48,9 @@ public class Score {
         return true;
     }
 
-    public void gainPoint(Genealogy genealogy, int point) {
+    public void gainPoint(Genealogy genealogy, Score gained) {
+        int point = gained.categories.get(genealogy.getIndex()).getPoint();
+
         if (isHomeworkRange(genealogy)) {
             Category subTotal = categories.get(Genealogy.SUBTOTAL.getIndex());
             subTotal.gain(point);
