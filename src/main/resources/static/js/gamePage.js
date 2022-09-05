@@ -92,11 +92,13 @@ function showText(){
     document.getElementById('Rule').innerHTML = text[rule];
     document.getElementById('RuleIndex').innerHTML = (rule + 1) + " / " + text.length;
 }
+
 function nextText(){
     ++rule;
     if(rule==text.length) rule=0;
     showText();
 }
+
 function prevText(){
     --rule;
     if(rule==-1) rule=text.length-1;
