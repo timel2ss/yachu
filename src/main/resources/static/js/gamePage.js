@@ -85,24 +85,32 @@ function rollDices() {
         return;
     }
 
-    fetch("/api/" + id + "/roll", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "fixStates": fixStates,
-        }),
-    })
-        .then((response) => response.json())
-        .then((json) => {
-            let diceStates = [];
-            for (let index = 0; index < 5; index++) {
-                diceStates.push(json.dices[index].value);
-            }
-            setGameState(json.chance, diceStates, json.score, "gray");
-            setTmpScoreBoard(json.score)
-        });
+    for (let i = 0; i < 5; i++) {
+        if(!fixStates[i]) {
+            setDiceImg(i, 0)
+        }
+    }
+
+    setTimeout(function () {
+        fetch("/api/" + id + "/roll", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "fixStates": fixStates,
+            }),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let diceStates = [];
+                for (let index = 0; index < 5; index++) {
+                    diceStates.push(json.dices[index].value);
+                }
+                setGameState(json.chance, diceStates, json.score, "gray");
+                setTmpScoreBoard(json.score)
+            });
+    }, 250)
 }
 
 function gain(index) {
