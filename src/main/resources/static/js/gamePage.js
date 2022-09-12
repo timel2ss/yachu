@@ -24,7 +24,6 @@ function addBtnFunction() {
     document.getElementById("rollDicesBtn").onclick = () => rollDices();
     document.getElementById("gameRuleShowBtn").onclick = () => openLayerPopup('gameRuleContent');
     document.getElementById("popUpCloseBtn").onclick = () => closeLayerPopup();
-    document.getElementById("anima").onclick = () => settingAnima();
     document.getElementById("nextBtn").onclick = () => nextText();
     document.getElementById("prevBtn").onclick = () => prevText();
 
@@ -105,18 +104,7 @@ function prevText(){
     if(rule==-1) rule=text.length-1;
     showText();
 }
-let time = 0;
-let maxCnt = 5;
-let delay = 150;
 
-function settingAnima(){
-    if(delay!=0) {
-        delay=0;
-    }
-    else {
-        delay=150;
-    }
-}
 function rollDices() {
     if (chance >= 3) {
         openLayerPopup('chanceOut');
@@ -124,40 +112,34 @@ function rollDices() {
         return;
     }
 
-    const target = document.getElementById('rollDicesBtn');
-    target.disabled = true;
-
-    clearInterval(time);
-    time = setInterval("throwDice()",delay);
-    setTimeout(() => fetch("/api/" + id + "/roll", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "fixStates": fixStates,
-        }),
-    })
-        .then((response) => response.json())
-        .then((json) => {
-            let diceStates = [];
-            for (let index = 0; index < 5; index++) {
-                diceStates.push(json.dices[index].value);
-            }
-            setGameState(json.chance, diceStates, json.score, "gray");
-            setTmpScoreBoard(json.score)
-            clearInterval(time);
-            target.disabled = false;
-        }), delay * maxCnt);
-}
-function throwDice() {
-    for (let value = 0; value < 5; value++) {
-        console.log(value + fixStates[value])
-        if(!fixStates[value]) {
-            setDiceImg(value, Math.floor(Math.random() * 6) + 1);
+    for (let i = 0; i < 5; i++) {
+        if(!fixStates[i]) {
+            setDiceImg(i, 0)
         }
     }
+
+    setTimeout(function () {
+        fetch("/api/" + id + "/roll", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "fixStates": fixStates,
+            }),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let diceStates = [];
+                for (let index = 0; index < 5; index++) {
+                    diceStates.push(json.dices[index].value);
+                }
+                setGameState(json.chance, diceStates, json.score, "gray");
+                setTmpScoreBoard(json.score)
+            });
+    }, 250)
 }
+
 function gain(index) {
     if (chance == 0) {
         alert("주사위를 굴리십시오");
