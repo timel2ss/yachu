@@ -37,14 +37,16 @@ public class Player {
     }
 
     public void setScore(Genealogy select, int gained) {
-        score.gainPoint(select, gained);
+        if (score.gainPoint(select, gained)) {
+            resetState();
+        }
     }
 
     public boolean isOver() {
         return score.isFull();
     }
 
-    public void resetState() {
+    private void resetState() {
         chance = 0;
         dices.forEach(Dice::resetValue);
     }

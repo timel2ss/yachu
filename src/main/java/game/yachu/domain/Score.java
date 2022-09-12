@@ -47,17 +47,23 @@ public class Score {
         return true;
     }
 
-    public void gainPoint(Genealogy genealogy, int point) {
+    public boolean gainPoint(Genealogy genealogy, int point) {
+        Category category = categories.get(genealogy.getIndex());
+        if (category.isAcquired()) {
+            return false;
+        }
+
         if (isHomeworkRange(genealogy)) {
             Category subTotal = categories.get(Genealogy.SUBTOTAL.getIndex());
             subTotal.gain(point);
             gainBonus(subTotal);
         }
-        Category category = categories.get(genealogy.getIndex());
+
         category.gain(point);
 
         Category total = categories.get(Genealogy.TOTAL.getIndex());
         total.gain(point);
+        return true;
     }
 
     private void gainBonus(Category subTotal) {

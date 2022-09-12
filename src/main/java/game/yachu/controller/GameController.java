@@ -83,7 +83,6 @@ public class GameController {
             gameStateRepository.deleteGame(id);
             return new GainResponse(player.getScore(), true);
         }
-        player.resetState();
         return new GainResponse(player.getScore(), false);
     }
 }
