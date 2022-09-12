@@ -1,6 +1,7 @@
 package game.yachu.repository;
 
 import game.yachu.domain.Player;
+import game.yachu.exception.PlayerNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ public class GameStateRepository {
 
     public Player get(Long key) {
         return Optional.ofNullable(gameState.get(key))
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 key 입니다. key = " + key));
+                .orElseThrow(() -> new PlayerNotFoundException());
     }
 
     public void deleteGame(Long key) {

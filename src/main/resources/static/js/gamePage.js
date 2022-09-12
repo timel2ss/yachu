@@ -58,12 +58,19 @@ function loadDice() {
     }
 }
 
+function checkStatusCode(json) {
+    if (json.statusCode >= 400 && json.statusCode < 600) {
+        alert(json.message);
+    }
+}
+
 function loadGameState() {
     fetch("/api/" + id + "/load", {
         method: "POST"
     })
         .then((response) => response.json())
         .then((json) => {
+            checkStatusCode(json);
             setGameState(json.chance, json.dices, json.playerScore, "black");
             fillScoreBoard(json.diceScore, "gray");
             setTmpScoreBoard(json.diceScore);
@@ -130,6 +137,7 @@ function rollDices() {
         })
             .then((response) => response.json())
             .then((json) => {
+                checkStatusCode(json)
                 let diceStates = [];
                 for (let index = 0; index < 5; index++) {
                     diceStates.push(json.dices[index].value);
@@ -162,6 +170,7 @@ function gain(index) {
     })
         .then((response) => response.json())
         .then((json) => {
+            checkStatusCode(json)
             let diceStates = [0, 0, 0, 0, 0];
             fixStates = [false, false, false, false, false];
             for (let i = 0; i < 5; i++) {
@@ -202,6 +211,7 @@ function gain(index) {
         })
             .then((response) => response.json())
             .then((json) => {
+                checkStatusCode(json)
                 loadRanking(json);
                 openRankingPopup();
             })
@@ -220,6 +230,7 @@ function gain(index) {
             },
         }).then((response) => response.json())
             .then((json) => {
+                checkStatusCode(json)
                 for (let ranking = 0; ranking < 10; ranking++) {
                     let tmpTableRow = document.createElement("tr");
 

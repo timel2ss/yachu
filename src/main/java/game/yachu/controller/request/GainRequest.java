@@ -1,5 +1,6 @@
 package game.yachu.controller.request;
 
+import game.yachu.domain.Genealogy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GainRequest {
-    private String category;
+    private Genealogy category;
+
     private int gained;
 }
