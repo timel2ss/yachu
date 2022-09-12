@@ -24,6 +24,8 @@ function addBtnFunction() {
     document.getElementById("rollDicesBtn").onclick = () => rollDices();
     document.getElementById("gameRuleShowBtn").onclick = () => openLayerPopup('gameRuleContent');
     document.getElementById("popUpCloseBtn").onclick = () => closeLayerPopup();
+    document.getElementById("nextBtn").onclick = () => nextText();
+    document.getElementById("prevBtn").onclick = () => prevText();
 
     for (let i = 0; i < categories.length; i++) {
         if (i == 6 || i == 7 || i == 14) {
@@ -75,47 +77,75 @@ function loadGameState() {
         })
 }
 
+let rule = 0;
+let text=[];
+let ment=[];
 function loadTextFile() {
     fetch("/text/gameRule.txt")
         .then((res) => res.text())
         .then((data) => {
-            checkStatusCode(json)
-            data = data.replace(/\r\n/ig, '<br>');
-            data = data.replace(/\r/ig, '<br>');
-            data = data.replace(/\n/ig, '<br>');
-            document.getElementById('gameRuleContent').innerHTML = data;
+            text=data.split('@');
+            showText();
         })
+    fetch("/text/ment.txt")
+        .then((res) => res.text())
+        .then((data) => {
+            ment=data.split('@');
+            console.log(ment);
+        })
+}
+
+function showText(){
+    document.getElementById('Rule').innerHTML = text[rule];
+    document.getElementById('RuleIndex').innerHTML = (rule + 1) + " / " + text.length;
+}
+
+function nextText(){
+    ++rule;
+    if(rule==text.length) rule=0;
+    showText();
+}
+
+function prevText(){
+    --rule;
+    if(rule==-1) rule=text.length-1;
+    showText();
 }
 
 function rollDices() {
     if (chance >= 3) {
-        alert("다 돌림");
+        openLayerPopup('chanceOut');
+        document.getElementById("ment").innerHTML = ment[Math.floor(Math.random() * ment.length)];
         return;
     }
 
-    fetch("/api/" + id + "/roll", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "fixStates": fixStates,
-        }),
-    })
-        .then((response) => {
-            console.log(response);
-            return response.json();
+    for (let i = 0; i < 5; i++) {
+        if(!fixStates[i]) {
+            setDiceImg(i, 0)
+        }
+    }
+
+    setTimeout(function () {
+        fetch("/api/" + id + "/roll", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "fixStates": fixStates,
+            }),
         })
-        .then((json) => {
-            console.log(json);
-            checkStatusCode(json)
-            let diceStates = [];
-            for (let index = 0; index < 5; index++) {
-                diceStates.push(json.dices[index].value);
-            }
-            setGameState(json.chance, diceStates, json.score, "gray");
-            setTmpScoreBoard(json.score)
-        });
+            .then((response) => response.json())
+            .then((json) => {
+                checkStatusCode(json)
+                let diceStates = [];
+                for (let index = 0; index < 5; index++) {
+                    diceStates.push(json.dices[index].value);
+                }
+                setGameState(json.chance, diceStates, json.score, "gray");
+                setTmpScoreBoard(json.score)
+            });
+    }, 250)
 }
 
 function gain(index) {
