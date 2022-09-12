@@ -63,52 +63,9 @@ table {
 .textCenter {
     text-align: center;
 }
-.textLeft{
+
+.textLeft {
     text-align: left;
-}
-
-.check {
-    position: relative;
-    margin-top: 10px;
-}
-
-.check .checkBox input[type="checkbox"] {
-    display: none;
-}
-
-.check .checkBox input[type="checkbox"] + label {
-    margin-left: 110px;
-    display: inline-block;
-    width: 17px;
-    height: 17px;
-    background: #ffffff;
-    cursor: pointer;
-    border: 3px solid orange;
-    border-radius: 3px;
-    float: right;
-}
-
-.check .checkBox:after {
-    display: block;
-    clear: both;
-    content: "";
-}
-
-.check .checkBox input[type="checkbox"]:checked + label {
-    border: 3px solid orange;
-    background: #ffc400 no-repeat center/10px 10px;
-    float: right;
-}
-
-.check .checkBox input[type="checkbox"] + label span {
-    position: absolute;
-    width: 105px;
-    right: 30px;
-    display: block;
-    font-weight: bold;
-    font-family: Arial;
-    font-style: italic;
-    color: lightsalmon;
 }
 
 .diceBtn {
